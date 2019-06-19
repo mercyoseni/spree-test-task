@@ -1,24 +1,13 @@
-# README
+## Spree Test Task
+- Spree Commerce Test Task to add a feature that will let admins upload products to the Spree database from a `.csv` file
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Getting Started
 
-Things you may want to cover:
+- Clone this repo `git clone https://github.com/mercyoseni/Spree-Test-Task.git`
+- Install the gem dependencies `bundle install`
+- To run migrations as well as adding seed and sample data and to copy frontend views for easy customization (if spree_frontend available) and also create admin user by default, run:
+`rails g spree:install --user_class=Spree::User`
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+#### Reference
+[Spree Github](https://github.com/spree/spree)
+[Spree Commerce Guides](https://guides.spreecommerce.org/)
