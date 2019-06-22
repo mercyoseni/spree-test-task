@@ -1,35 +1,74 @@
 module Spree
   class ProductImport
+    include ActiveModel::Model
 
-    def import(file)
-      CSV.foreach(file.path, headers: true, col_sep: ';') do |row|
-        params = row_to_params(row) # setup row
+    attr_accessor :file
+
+    def import(csv_file)
+      CSV.foreach(csv_file.path, headers: true, col_sep: ';') do |row|
+        # skip invalid row but display the error after the import
+        # TODO: implement displaying the row number with the related error
+        next unless params = row_to_params(row)
+
         existing_product = Spree::Product.find_by_slug(row['slug'])
 
         product =
           if existing_product.present?
-            # update the existing product
-            update_product(existing_product, params)
+            update_product(existing_product, params) # update the existing product
           else
             create_product(params) # create product using the params
           end
 
-        set_taxon(product, row['category'])
-        set_stock_total(product, row['stock_total'])
+        set_taxon(product, row['category']) if row['category'].present?
+        set_stock_total(product, row['stock_total']) if row['stock_total'].present?
       end
+
+      true
+    end
+
+    def valid?
+      validate_file? && validate_content_type?
     end
 
     private
 
+    def validate_file?
+      if file.present?
+        true
+      else
+        errors.add(:file, 'is empty')
+        false
+      end
+    end
+
+    def validate_content_type?
+      if file.content_type == 'text/csv'
+        true
+      else
+        errors.add(:file, 'content type not allowed')
+        false
+      end
+    end
+
     def row_to_params(row)
-      {
-        name: row['name'],
-        description: row['description'],
-        price: row['price'].sub(',', '.').to_f, # convert price to float
-        available_on: row['availability_date'],
-        slug: row['slug'],
-        shipping_category_id: set_shipping_category.id # set default shipping category
-      }
+      required_params = %w(name price slug)
+
+      if required_params.all? { |param| row[param].present? }
+        {
+          name: row['name'],
+          description: row['description'],
+          price: row['price'].sub(',', '.').to_f, # convert price to float
+          available_on: row['availability_date'],
+          slug: row['slug'],
+          shipping_category_id: set_shipping_category.id # set default shipping category
+        }
+      else
+        errors.add(
+          :base,
+          "Please include all attributes. Name, Price and Slug can't be blank"
+        )
+        nil
+      end
     end
 
     def update_product(product, params)
