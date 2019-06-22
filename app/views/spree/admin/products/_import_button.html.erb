@@ -1,0 +1,20 @@
+<%= button 'Import Products', 'import', 'submit', class: 'btn btn-success', icon: 'import', 'data-toggle': 'modal', 'data-target': '#myModal' %>
+
+<div class='modal' id='myModal'>
+  <div class='modal-dialog'>
+    <div class='modal-content' style='text-align: center'>
+      <div class='modal-header'>
+        <h3 class='modal-title'>Upload Products CSV</h3>
+      </div>
+      <div class='modal-body'>
+        <%= form_tag admin_product_imports_url, multipart: true do %>
+          <%= file_field_tag :csv_file, accept: 'text/csv' %>
+      </div>
+      <div class='modal-footer'>
+        <%= button_tag 'Cancel', class: 'btn btn-danger', 'data-dismiss': 'modal' %>
+        <%= button 'Import Products', 'import', 'submit', class: 'btn btn-success', id: 'admin_product_imports', data: { disable_with: 'Importing...' } %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

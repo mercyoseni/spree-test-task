@@ -3,15 +3,7 @@
 <% end %>
 
 <% content_for :page_actions do %>
-  <div>
-    <h2>Import Data</h2>
-    <%= form_tag admin_product_imports_url, multipart: true do %>
-      <%= file_field_tag :csv_file, accept: 'text/csv' %>
-      <%= submit_tag 'Upload Product CSV'%>
-    <% end %>
-  </div>
-
-  <!--<%= button_link_to 'Upload Product CSV', new_object_url, { class: "btn-success", icon: 'add', id: 'admin_new_product' } %>-->
+  <%= render 'import_button' %>
   <%= button_link_to Spree.t(:new_product), new_object_url, { class: "btn-success", icon: 'add', id: 'admin_new_product' } %>
 <% end if can?(:create, Spree::Product) %>
 
