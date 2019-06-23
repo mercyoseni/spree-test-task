@@ -9,10 +9,10 @@ module Spree
       @row_number
     end
 
-    def import(csv_file)
+    def import
       @row_number = 0
 
-      CSV.foreach(csv_file.path, headers: true, col_sep: ';') do |row|
+      CSV.foreach(file.path, headers: true, col_sep: ';') do |row|
         params = row_to_params(row)
         @row_number += 1
 
