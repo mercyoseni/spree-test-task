@@ -1,0 +1,14 @@
+<% if @product_import.errors.any? %>
+  <div id='error_explanation'>
+    <div class='alert alert-danger'>
+      The file contains <%= pluralize(@product_import.errors.count, 'error') %>.
+    </div>
+    <ul>
+    <% @product_import.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= @product_import.row_count %>
