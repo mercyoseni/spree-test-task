@@ -18,7 +18,6 @@ module Spree
 
         begin
           Spree::Product.transaction do
-
             existing_product = Spree::Product.find_by_slug(row['slug'])
 
             product =

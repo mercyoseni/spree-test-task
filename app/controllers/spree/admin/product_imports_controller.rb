@@ -1,6 +1,8 @@
 module Spree
   module Admin
     class ProductImportsController < ResourceController
+      before_action :authorize
+
       def create
         @product_import = Spree::ProductImport.new
         @product_import.file = import_params['csv_file']
@@ -26,6 +28,10 @@ module Spree
         else
           {}
         end
+      end
+
+      def authorize
+        authorize! :create, Product
       end
     end
   end
