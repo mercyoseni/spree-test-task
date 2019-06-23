@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204122814) do
+ActiveRecord::Schema.define(version: 20190623001050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 20171204122814) do
     t.datetime "updated_at", null: false
     t.integer "promotion_category_id"
     t.index ["advertise"], name: "index_spree_promotions_on_advertise"
-    t.index ["code"], name: "index_spree_promotions_on_code"
+    t.index ["code"], name: "index_spree_promotions_on_code", unique: true
     t.index ["expires_at"], name: "index_spree_promotions_on_expires_at"
     t.index ["id", "type"], name: "index_spree_promotions_on_id_and_type"
     t.index ["promotion_category_id"], name: "index_spree_promotions_on_promotion_category_id"
@@ -947,10 +947,6 @@ ActiveRecord::Schema.define(version: 20171204122814) do
     t.integer "taxonomy_id"
     t.integer "lft"
     t.integer "rgt"
-    t.string "icon_file_name"
-    t.string "icon_content_type"
-    t.integer "icon_file_size"
-    t.datetime "icon_updated_at"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
