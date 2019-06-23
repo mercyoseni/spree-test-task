@@ -51,7 +51,7 @@ module Spree
       if file.present?
         true
       else
-        errors.add(:file, 'is empty')
+        errors.add(:base, 'No file chosen')
         false
       end
     end
