@@ -37,6 +37,8 @@ RSpec.describe Spree::ProductImport, type: :model do
 
   describe '#import' do
     context 'when the file contains valid products' do
+      let(:last_product) { Spree::Product.last }
+
       before do
         product_import.file = fixture_file_upload(valid_file, 'text/csv')
       end
@@ -101,9 +103,5 @@ RSpec.describe Spree::ProductImport, type: :model do
         ])
       end
     end
-  end
-
-  def last_product
-    Spree::Product.last
   end
 end
