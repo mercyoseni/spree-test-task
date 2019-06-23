@@ -9,6 +9,11 @@ require 'rspec/rails'
 require 'factory_bot'
 require 'faker'
 
+# Requires spree test helpers
+require 'spree/testing_support/authorization_helpers'
+require 'spree/testing_support/controller_requests'
+
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -64,4 +69,7 @@ RSpec.configure do |config|
   FactoryBot.definition_file_paths = [File.expand_path('../factories', __FILE__)]
   FactoryBot.find_definitions
   config.include FactoryBot::Syntax::Methods
+
+  config.include Spree::TestingSupport::ControllerRequests, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end
