@@ -1,3 +1,7 @@
+<% content_for :page_title do %>
+  <%='Product Imports' %>
+<% end %>
+
 <% content_for :page_actions do %>
   <%= render 'spree/admin/products/import_button' %>
   <%= button_link_to Spree.t(:products), admin_products_path, { class: 'btn-success', icon: 'th-large', id: 'admin_products' } %>
