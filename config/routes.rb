@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   Spree::Core::Engine.add_routes do
     namespace :admin, path: Spree.admin_path do
-      resources :product_imports, only: :create
+      resources :product_imports, only: [:create, :show]
     end
   end
 end
