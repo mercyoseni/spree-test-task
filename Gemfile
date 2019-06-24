@@ -26,7 +26,6 @@ group :test do
   gem 'rspec-rails', '~> 3.8'
   gem 'factory_bot'
   gem 'faker'
-  gem 'rails-controller-testing'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
