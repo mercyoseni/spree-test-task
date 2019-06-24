@@ -1,0 +1,27 @@
+<% content_for :page_title do %>
+  <%='Product Imports' %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= render 'spree/admin/products/import_button' %>
+  <%= button_link_to Spree.t(:products), admin_products_path, { class: 'btn-success', icon: 'th-large', id: 'admin_products' } %>
+<% end %>
+
+<div class='alert alert-info'>
+  <h4><strong>Import Status: &nbsp&nbsp <%= @file_import.state.capitalize %></strong>
+  <h4><strong>Total number of rows: &nbsp&nbsp <%= @file_import.row_count %></strong></h4>
+  <h4><strong>Successfully imported rows: &nbsp&nbsp <%= @file_import.success_count %></strong></h4>
+</div>
+
+<% if @file_import.error.any? %>
+  <div>
+    <div class='alert alert-danger'>
+      <h4><strong>Number of errors: &nbsp&nbsp <%= pluralize(@file_import.error.count, 'error') %></strong></h4>
+    </div>
+    <ul style='color: #a94442'>
+      <% @file_import.error.each do |message| %>
+        <li><h4><%= message %></h4></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -5,14 +5,12 @@ module Spree
 
     attr_accessor :file
 
-    def row_count
-      @row_number
-    end
-
-    def import
+    def import(filepath, file_import_id)
       @row_number = 0
+      @file_import = FileImport.find_by_id(file_import_id)
 
-      CSV.foreach(file.path, headers: true, col_sep: ';') do |row|
+      CSV.foreach(filepath, headers: true, col_sep: ';') do |row|
+        @file_import.update(state: 'Processing')
         params = row_to_params(row)
         @row_number += 1
 
@@ -37,7 +35,7 @@ module Spree
         end
       end
 
-      true
+      update_file_import
     end
 
     def valid?
@@ -45,6 +43,15 @@ module Spree
     end
 
     private
+
+    def update_file_import
+      @file_import.update!(
+        row_count: @row_number,
+        error: errors.full_messages,
+        success_count: @row_number - errors.full_messages.size,
+        state: 'Completed'
+      )
+    end
 
     def validate_file?
       if file.present?
