@@ -7,7 +7,12 @@
 - Install the gem dependencies `bundle install`
 - To run migrations as well as adding seed and sample data and to copy frontend views for easy customization (if spree_frontend available) and also create admin user by default, run:
 
-`rails g spree:install --user_class=Spree::User`
+`rails g spree:install --user_class=Spree::User` and follow post-install instructions.
+
+- To run the app (use different tabs):
+  - run `redis-server` to start Redis (You can install using `brew install redis`)
+  - run `rails s` to start the server
+  - run `bundle exec sidekiq` to run Sidekiq
 
 ## Import Products CSV
 - Here is the [sample.csv](https://github.com/mercyoseni/spree-test-task/blob/master/public/sample.csv) file to import products.
@@ -18,18 +23,22 @@
   ;Spree Tote;Consequuntur quibusdam repellendus quia non. Iste et pariatur nulla fugit. In ipsum accusantium quasi mollitia et eos. Ullam veniam quis ut adipisci est autem molestiae eos. Ab necessitatibus et rerum quasi quia debitis eum.;14,99;2017-12-30T14:55:22.913Z;spree-tote;20;Bags
   ```
 
-### Screenshots:
+## Screenshots:
   ### Upload Product CSV modal
   <img width="1913" alt="Screenshot 2019-06-23 at 7 49 32 PM" src="https://user-images.githubusercontent.com/26272984/59980644-b30a5800-95f0-11e9-9eaf-51c850f6cdf2.png">
 
-  ### Product Import Report Page
-  <img width="1919" alt="Screenshot 2019-06-23 at 7 50 10 PM" src="https://user-images.githubusercontent.com/26272984/59980645-b30a5800-95f0-11e9-93e7-9dc6436d2cd3.png">
-
-  ### Upload Product CSV modal requires a file before submission
+  ### The modal requires a file before submission
   <img width="1920" alt="Screenshot 2019-06-23 at 7 55 14 PM (2)" src="https://user-images.githubusercontent.com/26272984/59980675-13999500-95f1-11e9-83bb-5cb7cf67bfa6.png">
 
-  #### When an Admin bypasses the frontend validation and submit, the admin is redirected to the Products page with the `No file chosen` error message
+  #### When an Admin bypasses the frontend validation and submit, the page displays the related error message
   <img width="1920" alt="Screenshot 2019-06-23 at 7 56 37 PM (2)" src="https://user-images.githubusercontent.com/26272984/59980676-13999500-95f1-11e9-8a06-c5bc3da5515e.png">
+
+  ### Product Import Report Page
+  #### While the background job is running
+  <img width="1920" alt="Screenshot 2019-06-24 at 4 37 35 AM (2)" src="https://user-images.githubusercontent.com/26272984/59990171-153b7b00-963a-11e9-95ec-3ff7914745ce.png">
+
+  #### After the background job is completed
+  <img width="1920" alt="Screenshot 2019-06-24 at 4 37 45 AM (2)" src="https://user-images.githubusercontent.com/26272984/59990173-153b7b00-963a-11e9-9110-faf437c79345.png">
 
 ## Tests
 - To run the tests, run `rspec spec`
