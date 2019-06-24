@@ -9,9 +9,9 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
-gem 'spree', '~> 3.5.0'
-gem 'spree_auth_devise', '~> 3.5'
-gem 'spree_gateway', '~> 3.4'
+gem 'spree', '3.5.0'
+gem 'spree_auth_devise', '3.5'
+gem 'spree_gateway', '3.4'
 gem 'sidekiq'
 
 group :development, :test do
