@@ -4,7 +4,7 @@ module Spree
       before_action :authorize
 
       def create
-        @product_import = Spree::ProductImport.new
+        @product_import = Spree::Admin::ProductImport.new
         @product_import.file = import_params['csv_file']
 
         if @product_import.valid?
@@ -32,8 +32,8 @@ module Spree
       private
 
       def import_params
-        if params[:product_import] && params[:product_import].present?
-          params.require(:product_import).permit(:csv_file)
+        if params[:admin_product_import] && params[:admin_product_import].present?
+          params.require(:admin_product_import).permit(:csv_file)
         else
           {}
         end

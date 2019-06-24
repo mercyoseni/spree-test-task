@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Spree::ProductImport, type: :model do
+RSpec.describe Spree::Admin::ProductImport, type: :model do
   let!(:product_import) { described_class.new }
   let!(:stock_location) { create(:stock_location) }
   let!(:shipping_category) { create(:shipping_category) }

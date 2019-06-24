@@ -12,7 +12,7 @@ RSpec.describe Spree::Admin::ProductImportsController, type: :controller do
           expect(Spree::Admin::ProductImportJob).to receive(:perform_async)
 
           file = fixture_file_upload(valid_file, 'text/csv')
-          post :create, params: { product_import: { csv_file: file } }
+          post :create, params: { admin_product_import: { csv_file: file } }
           file_import = FileImport.last
 
           expect(response).to have_http_status(302)
@@ -25,7 +25,7 @@ RSpec.describe Spree::Admin::ProductImportsController, type: :controller do
           file = fixture_file_upload(valid_file, 'text/plain')
           request.env['HTTP_REFERER'] = admin_products_path
 
-          post :create, params: { product_import: { csv_file: file } }
+          post :create, params: { admin_product_import: { csv_file: file } }
 
           expect(response).to have_http_status(302)
           expect(response).to redirect_to(admin_products_path)
@@ -37,7 +37,7 @@ RSpec.describe Spree::Admin::ProductImportsController, type: :controller do
       it 'redirects to admin products page' do
         request.env['HTTP_REFERER'] = admin_products_path
 
-        post :create, params: { product_import: { csv_file: nil } }
+        post :create, params: { admin_product_import: { csv_file: nil } }
 
         expect(response).to have_http_status(302)
         expect(response).to redirect_to(admin_products_path)
