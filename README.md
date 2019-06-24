@@ -5,9 +5,8 @@
 
 - Clone this repo `git clone https://github.com/mercyoseni/spree-test-task.git`
 - Install the gem dependencies `bundle install`
-- To run migrations as well as adding seed and sample data and to copy frontend views for easy customization (if spree_frontend available) and also create admin user by default, run:
-
-`rails g spree:install --user_class=Spree::User` and follow post-install instructions.
+- To setup database and run migrations `rails db:setup`
+- To load seed data, run `bundle exec rake spree_sample:load`
 
 - To run the app (use different tabs):
   - run `redis-server` to start Redis (You can install using `brew install redis`)
