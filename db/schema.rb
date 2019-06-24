@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190623001050) do
+ActiveRecord::Schema.define(version: 20190623234345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "file_imports", force: :cascade do |t|
+    t.string "filename"
+    t.integer "success_count"
+    t.text "error"
+    t.integer "row_count"
+    t.string "state", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
     t.string "slug", null: false
