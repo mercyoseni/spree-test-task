@@ -10,6 +10,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'spree', '~> 3.5.0'
 gem 'spree_auth_devise', '~> 3.5'
 gem 'spree_gateway', '~> 3.4'
+gem 'sidekiq'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
