@@ -4,20 +4,27 @@ module Spree
       require 'csv'
       include ActiveModel::Model
 
-      attr_accessor :file
+      attr_reader :shipping_category
 
-      def import(filepath, file_import_id)
+      def initialize
+        @shipping_category = Spree::ShippingCategory.find_or_create_by!(
+          name: 'Default'
+        )
+        super
+      end
+
+      def import(file_import_id)
         @row_number = 0
-        @file_import = FileImport.find_by_id(file_import_id)
+        @file_import = FileImport.find_by(id: file_import_id)
 
-        CSV.foreach(filepath, headers: true, col_sep: ';') do |row|
+        CSV.foreach(@file_import.file.path, headers: true, col_sep: ';') do |row|
           @file_import.update(state: 'Processing')
           params = row_to_params(row)
           @row_number += 1
 
           begin
             Spree::Product.transaction do
-              existing_product = Spree::Product.find_by_slug(row['slug'])
+              existing_product = Spree::Product.find_by(slug: row['slug'])
 
               product =
                 if existing_product.present?
@@ -39,10 +46,6 @@ module Spree
         update_file_import
       end
 
-      def valid?
-        validate_file? && validate_content_type?
-      end
-
       private
 
       def update_file_import
@@ -54,24 +57,6 @@ module Spree
         )
       end
 
-      def validate_file?
-        if file.present?
-          true
-        else
-          errors.add(:base, 'No file chosen')
-          false
-        end
-      end
-
-      def validate_content_type?
-        if file.content_type == 'text/csv'
-          true
-        else
-          errors.add(:file, 'content type not allowed')
-          false
-        end
-      end
-
       def row_to_params(row)
         {
           name: row['name'],
@@ -79,7 +64,7 @@ module Spree
           price: row['price'] && row['price'].sub(',', '.').to_f, # convert price to float
           available_on: row['availability_date'],
           slug: row['slug'],
-          shipping_category_id: set_shipping_category.id # set default shipping category
+          shipping_category_id: shipping_category.id # set default shipping category
         }
       end
 
@@ -94,7 +79,7 @@ module Spree
 
       def set_taxon(product, name)
         categories_taxonomy = Spree::Taxonomy.first
-        taxon = Spree::Taxon.find_by_name(name) ||
+        taxon = Spree::Taxon.find_by(name: name) ||
         Spree::Taxon.create!(name: name, taxonomy: categories_taxonomy)
 
         # add taxon only when it's not already linked
@@ -102,7 +87,7 @@ module Spree
       end
 
       def set_stock_total(product, stock_total)
-        variant = Spree::Variant.find_by_product_id(product.id)
+        variant = Spree::Variant.find_by(product_id: product.id)
         stock_location = Spree::StockLocation.first
         stock_item = Spree::StockItem.find_or_create_by!(
           variant_id: variant.id,
@@ -111,10 +96,6 @@ module Spree
         stock_item.count_on_hand = stock_total
 
         stock_item.save!
-      end
-
-      def set_shipping_category
-        Spree::ShippingCategory.find_or_create_by!(name: 'Default')
       end
     end
   end

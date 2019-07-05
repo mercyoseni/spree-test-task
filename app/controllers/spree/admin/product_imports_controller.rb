@@ -4,36 +4,29 @@ module Spree
       before_action :authorize
 
       def create
-        @product_import = Spree::Admin::ProductImport.new
-        @product_import.file = import_params['csv_file']
+        file_import = FileImport.new(file: import_params['file'])
 
-        if @product_import.valid?
-          file_import = FileImport.create!(
-            filename: @product_import.file.original_filename
-          )
+        if file_import.save
+          Spree::Admin::ProductImportJob.perform_async(file_import.id)
 
-          Spree::Admin::ProductImportJob.perform_async(
-            @product_import.file.tempfile.path,
-            file_import.id
-          )
           flash[:notice] = 'Please refresh while status is pending or processing'
           redirect_to admin_product_import_path(file_import)
         else
-          flash[:error] = "#{ @product_import.errors.full_messages.join }.
+          flash[:error] = "#{ file_import.errors.full_messages.join }.
             Fix error and try again."
           redirect_to request.referer
         end
       end
 
       def show
-        @file_import = FileImport.find_by_id(params[:id])
+        @file_import = FileImport.find_by(id: params[:id])
       end
 
       private
 
       def import_params
-        if params[:admin_product_import] && params[:admin_product_import].present?
-          params.require(:admin_product_import).permit(:csv_file)
+        if params[:file_import] && params[:file_import].present?
+          params.require(:file_import).permit(:file)
         else
           {}
         end

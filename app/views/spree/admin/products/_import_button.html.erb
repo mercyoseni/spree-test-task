@@ -9,8 +9,8 @@
       <div class='modal-body'>
         <h4>You can create or update products. Here's the <a href='/sample.csv' download>sample file.</a></h4>
         <br>
-        <%= form_for [:admin, Spree::Admin::ProductImport.new], url: admin_product_imports_url, multipart: true do |f| %>
-          <%= f.file_field :csv_file, accept: 'text/csv', required: true %>
+        <%= form_for FileImport.new, url: admin_product_imports_url, multipart: true do |f| %>
+          <%= f.file_field :file, accept: 'text/csv', required: true %>
       </div>
       <div class='modal-footer'>
         <%= button_tag 'Cancel', class: 'btn btn-danger', 'data-dismiss': 'modal' %>
