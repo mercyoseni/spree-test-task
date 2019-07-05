@@ -18,3 +18,5 @@
 /yarn-error.log
 
 .byebug_history
+/public/system/file*
+dump.rdb
