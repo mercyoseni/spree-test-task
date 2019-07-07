@@ -12,7 +12,7 @@ module Spree
           flash[:notice] = 'Please refresh while status is pending or processing'
           redirect_to admin_product_import_path(file_import)
         else
-          flash[:error] = "#{ file_import.errors.full_messages.join }.
+          flash[:error] = "#{ file_import.errors.full_messages.join('. ') }.
             Fix error and try again."
           redirect_to request.referer
         end

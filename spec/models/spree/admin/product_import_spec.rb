@@ -5,6 +5,7 @@ RSpec.describe Spree::Admin::ProductImport, type: :model do
   let!(:stock_location) { create(:stock_location) }
   let(:valid_file) { file_fixture('valid_sample.csv').to_s }
   let(:invalid_file) { file_fixture('invalid_sample.csv').to_s }
+  let(:invalid_pdf_file) { file_fixture('invalid_pdf_file.pdf').to_s }
 
   describe 'validation' do
     context 'when the file is present' do
@@ -16,17 +17,17 @@ RSpec.describe Spree::Admin::ProductImport, type: :model do
         end
       end
 
-      # skipping this because Paperclip assigns 'text/plain'
-      # content type by default
-      # TODO: Research how to fix that default behaviour
-      xcontext 'when the file content type is NOT text/csv' do
+      context 'when the file content type is NOT text/csv' do
         it 'returns false' do
-          pdf_file = fixture_file_upload(invalid_file, 'text/pdf')
+          pdf_file = fixture_file_upload(invalid_pdf_file, 'text/pdf')
           file_import = FileImport.new(file: pdf_file)
 
           expect(file_import.save).to be false
-          expect(file_import.errors.full_messages.join)
-            .to eq('File content type not allowed')
+          expect(file_import.errors.full_messages.join('. '))
+            .to eq(
+              'File has contents that are not what they are reported to be. '\
+              'File is invalid. File content type is invalid'
+            )
         end
       end
     end
@@ -116,7 +117,8 @@ RSpec.describe Spree::Admin::ProductImport, type: :model do
         expect(@file_import.state).to eq('Completed')
         expect(@file_import.error.count).to eq(2)
         expect(@file_import.error).to eq([
-          "Row 2: Validation failed: Must supply price for variant or master price for product., Name can't be blank, Price can't be blank",
+          "Row 2: Validation failed: Must supply price for variant or master "\
+          "price for product., Name can't be blank, Price can't be blank",
           "Row 4: Validation failed: Name can't be blank"
         ])
       end
