@@ -187,7 +187,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.1.0)
-    puma (3.12.1)
+    puma (3.12.2)
     rabl (0.13.1)
       activesupport (>= 2.3.14)
     rack (2.0.7)
@@ -402,7 +402,7 @@ DEPENDENCIES
   paperclip (= 6.0.0)
   pg (~> 0.18)
   pry
-  puma (~> 3.7)
+  puma (~> 3.12)
   rails (~> 5.1.7)
   rspec-rails (~> 3.8)
   sass-rails (~> 5.0)
